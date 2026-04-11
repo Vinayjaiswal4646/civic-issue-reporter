@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Civic Issues</title>
+</head>
+
+<body>
+
+    <h1>Reported Issues</h1>
+
+    <a href="/upload">Report New Issue</a>
+
+    <hr>
+
+    <div id="map" style="height: 400px;"></div>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([28.6139, 77.2090], 5);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        var markers = [];
+
+        {% for issue in issues %}
+        {% if issue[3] and issue[4] %}
+        var marker = L.marker([
+            parseFloat("{{ issue[3] }}"),
+            parseFloat("{{ issue[4] }}")
+        ])
+            .addTo(map)
+            .bindPopup("{{ issue[1] }}");
+
+        markers.push(marker);
+        {% endif %}
+        {% endfor %}
+
+        if (markers.length > 0) {
+            var group = new L.featureGroup(markers);
+            map.fitBounds(group.getBounds());
+        }
+    </script>
+
+    <hr>
+
+    {% for issue in issues %}
+    <div>
+        <h3>{{ issue[1] }}</h3>
+        <img src="{{ issue[2] }}" width="200">
+    </div>
+    {% endfor %}
+
+</body>
+
+</html>

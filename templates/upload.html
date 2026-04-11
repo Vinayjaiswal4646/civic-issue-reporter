@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Issue</title>
+</head>
+<body>
+
+<h2>Report an Issue</h2>
+
+<form method="POST" enctype="multipart/form-data">
+
+    <input type="text" name="title" placeholder="Garbage / Pothole" required><br><br>
+
+    <input type="file" name="image" required><br><br>
+
+    <!-- Hidden fields -->
+    <input type="hidden" id="latitude" name="latitude">
+    <input type="hidden" id="longitude" name="longitude">
+
+    <!-- Button to get location -->
+    <button type="button" onclick="getLocation()">📍 Get Location</button><br><br>
+
+    <button type="submit">Submit</button>
+
+</form>
+<script>
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                document.getElementById("latitude").value = position.coords.latitude;
+                document.getElementById("longitude").value = position.coords.longitude;
+
+                alert("Location captured successfully!");
+            },
+            function(error) {
+                alert("Error getting location");
+            }
+        );
+    } else {
+        alert("Geolocation not supported");
+    }
+}
+</script>
+
+<a href="/">Back</a>
+
+</body>
+</html>
