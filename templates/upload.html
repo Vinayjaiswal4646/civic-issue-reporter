@@ -1,28 +1,85 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Upload Issue</title>
+    <title>Report Issue</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI';
+            background: linear-gradient(135deg, #3bbee6, #97c8ea);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 320px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        .back {
+            display: block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #555;
+        }
+    </style>
 </head>
+
 <body>
 
-<h2>Report an Issue</h2>
+<div class="card">
+
+<h2>📸 Report Issue</h2>
 
 <form method="POST" enctype="multipart/form-data">
 
-    <input type="text" name="title" placeholder="Garbage / Pothole" required><br><br>
+    <input type="text" name="title" placeholder="Garbage / Pothole" required>
 
-    <input type="file" name="image" required><br><br>
+    <input type="file" name="image" required>
 
-    <!-- Hidden fields -->
     <input type="hidden" id="latitude" name="latitude">
     <input type="hidden" id="longitude" name="longitude">
 
-    <!-- Button to get location -->
-    <button type="button" onclick="getLocation()">📍 Get Location</button><br><br>
+    <button type="button" onclick="getLocation()">📍 Get Location</button>
 
     <button type="submit">Submit</button>
 
 </form>
+
+<a href="/" class="back">⬅ Back</a>
+
+</div>
+
 <script>
 function getLocation() {
     if (navigator.geolocation) {
@@ -30,11 +87,10 @@ function getLocation() {
             function(position) {
                 document.getElementById("latitude").value = position.coords.latitude;
                 document.getElementById("longitude").value = position.coords.longitude;
-
-                alert("Location captured successfully!");
+                alert("Location captured!");
             },
-            function(error) {
-                alert("Error getting location");
+            function() {
+                alert("Please allow location access");
             }
         );
     } else {
@@ -42,8 +98,6 @@ function getLocation() {
     }
 }
 </script>
-
-<a href="/">Back</a>
 
 </body>
 </html>

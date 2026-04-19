@@ -1,59 +1,123 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Civic Issues</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI';
+            background: #f5f7fa;
+        }
+
+        header {
+            background: #1e293b;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+        }
+
+        .btn {
+            background: #3b82f6;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 15px 0;
+        }
+
+        #map {
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        img {
+            width: 100%;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>Reported Issues</h1>
+<header>
+    <h1>🚀 Civic Issue Reporter</h1>
+</header>
 
-    <a href="/upload">Report New Issue</a>
+<div class="container">
 
-    <hr>
+<a href="/upload" class="btn">+ Report Issue</a>
 
-    <div id="map" style="height: 400px;"></div>
+<div id="map" style="height: 400px;"></div>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-        var map = L.map('map').setView([28.6139, 77.2090], 5);
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap'
-        }).addTo(map);
+<script>
+var map = L.map('map').setView([28.6139, 77.2090], 5);
 
-        var markers = [];
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
+}).addTo(map);
 
-        {% for issue in issues %}
-        {% if issue[3] and issue[4] %}
+var markers = [];
+
+{% for issue in issues %}
+    {% if issue[3] and issue[4] %}
         var marker = L.marker([
             parseFloat("{{ issue[3] }}"),
             parseFloat("{{ issue[4] }}")
         ])
-            .addTo(map)
-            .bindPopup("{{ issue[1] }}");
+        .addTo(map)
+        .bindPopup("{{ issue[1] }}");
 
         markers.push(marker);
-        {% endif %}
-        {% endfor %}
+    {% endif %}
+{% endfor %}
 
-        if (markers.length > 0) {
-            var group = new L.featureGroup(markers);
-            map.fitBounds(group.getBounds());
-        }
-    </script>
+if (markers.length > 0) {
+    var group = new L.featureGroup(markers);
+    map.fitBounds(group.getBounds());
+}
+</script>
 
-    <hr>
+<h2>📋 Issues</h2>
 
-    {% for issue in issues %}
-    <div>
+<div class="grid">
+{% for issue in issues %}
+    <div class="card">
         <h3>{{ issue[1] }}</h3>
-        <img src="{{ issue[2] }}" width="200">
+        <img src="{{ issue[2] }}">
+        <p>📍 {{ issue[3] }}, {{ issue[4] }}</p>
     </div>
-    {% endfor %}
+{% endfor %}
+</div>
+
+</div>
 
 </body>
-
 </html>
