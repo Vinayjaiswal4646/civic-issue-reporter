@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+</head>
+
+<body>
+
+<h1>👨‍💼 Admin Panel</h1>
+
+<a href="/">⬅ Back to Home</a>
+
+<hr>
+
+{% for issue in issues %}
+<div style="margin-bottom:20px; border:1px solid #ccc; padding:10px;">
+    
+    <h3>{{ issue[1] }}</h3>
+    
+    <img src="{{ issue[2] }}" width="200">
+
+    <p>📍 {{ issue[3] }}, {{ issue[4] }}</p>
+
+    <p>⚙ Status: <b>{{ issue[5] }}</b></p>
+
+    <!-- 🔥 STATUS BUTTONS -->
+    <a href="/update_status/{{ issue[0] }}/Pending">Pending</a> |
+    <a href="/update_status/{{ issue[0] }}/In Progress">In Progress</a> |
+    <a href="/update_status/{{ issue[0] }}/Resolved">Resolved</a>
+
+</div>
+{% endfor %}
+
+</body>
+</html>

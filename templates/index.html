@@ -29,7 +29,7 @@
             border-radius: 6px;
             text-decoration: none;
             display: inline-block;
-            margin: 15px 0;
+            margin: 10px 5px;
         }
 
         #map {
@@ -48,16 +48,20 @@
             border-radius: 12px;
             padding: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: 0.2s;
-        }
-
-        .card:hover {
-            transform: scale(1.02);
         }
 
         img {
             width: 100%;
             border-radius: 8px;
+        }
+
+        .status {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .top-bar {
+            margin: 10px 0;
         }
     </style>
 </head>
@@ -70,8 +74,18 @@
 
 <div class="container">
 
-<a href="/upload" class="btn">+ Report Issue</a>
+<!-- 🔥 TOP BAR -->
+<div class="top-bar">
+    <a href="/upload" class="btn">+ Report Issue</a>
 
+    {% if session.get('user') %}
+        <a href="/logout" class="btn">Logout</a>
+    {% else %}
+        <a href="/login" class="btn">Login</a>
+    {% endif %}
+</div>
+
+<!-- 🗺️ MAP -->
 <div id="map" style="height: 400px;"></div>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -111,8 +125,19 @@ if (markers.length > 0) {
 {% for issue in issues %}
     <div class="card">
         <h3>{{ issue[1] }}</h3>
+
         <img src="{{ issue[2] }}">
+
         <p>📍 {{ issue[3] }}, {{ issue[4] }}</p>
+
+        <!-- 🔥 STATUS -->
+        <p class="status">Status: {{ issue[5] }}</p>
+
+        <!-- 👍 VOTES -->
+        <p>👍 Votes: {{ issue[6] }}</p>
+
+        <!-- 🔥 UPVOTE BUTTON -->
+        <a href="/upvote/{{ issue[0] }}" class="btn">Upvote</a>
     </div>
 {% endfor %}
 </div>
